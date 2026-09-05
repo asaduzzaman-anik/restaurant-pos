@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('category_id')
+                ->constrained('categories')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->unsignedBigInteger('stock')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->index(['category_id', 'is_active']);
         });
     }
 
